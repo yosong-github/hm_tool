@@ -5,6 +5,7 @@ import Eat from './toolList/eat'
 import BodyFatCalculators from './toolList/bodyFatCalculator'
 import Call from './toolList/call'
 import FamilyRelationCalculator from './toolList/familyRelationCalculator'
+import QrCode from './toolList/qrCode'
 
 
 interface ToolList {
@@ -23,6 +24,11 @@ struct Index {
       title: "加解密编码",
       info: 'MD5, base 64, 对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密。。。',
       cpn: 'EnDeCode'
+    },
+    {
+      title: "二维码生成器",
+      info: '在线生成二维码',
+      cpn: 'QrCode'
     },
     {
       title: "今天吃什么",
@@ -74,6 +80,8 @@ struct Index {
       Call()
     } else if (name === "FamilyRelationCalculator") {
       FamilyRelationCalculator()
+    } else if (name === "QrCode") {
+      QrCode()
     }
   }
 

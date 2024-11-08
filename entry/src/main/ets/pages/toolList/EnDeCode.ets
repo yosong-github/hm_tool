@@ -2,11 +2,63 @@
 import { LengthMetrics } from '@kit.ArkUI'
 import { CommonUtil } from '../../common/CommonUtil'
 
+import CryptoJS from '@ohos/crypto-js'
+
+
+// //第二步定义加密解密需要用到的key
+// const key = '111111'
+// const message = 'yosong'
+//
+// let aesBase64 = CryptoJS.AES.encrypt(message, key, {
+//
+// }).toString()
+//
+// console.log(aesBase64, 'aes')
+//
+// let str = CryptoJS.AES.decrypt(aesBase64, key)
+// // 最终得到结果res
+// let res = CryptoJS.enc.Utf8.stringify(str)
+//
+// console.log(res)
+
+
+interface ModeMap {
+  'CBC': CryptoJS.BlockCipherMode,
+  'CFB': CryptoJS.BlockCipherMode,
+  'CTR': CryptoJS.BlockCipherMode,
+  'OFB': CryptoJS.BlockCipherMode,
+  'ECB': CryptoJS.BlockCipherMode,
+}
+
 @Component
 export default  struct EnDeCode {
   @Consume('pageInfos') pageInfos: NavPathStack;
   @State currentIndex: number = 0
   private controller: TabsController = new TabsController()
+
+
+  // MD5 铭文
+  @State MD5Txt: string = ''
+  // 密文
+  @State MD5Res: string = ''
+  // Base 64 铭文
+  @State B64Txt: string = ''
+  // 密文
+  @State B64Res: string = ''
+
+  // AES
+  @State AES_key: string = ''
+  @State AES_txt: string = ''
+  @State AES_res: string = ''
+  @State AES_mode: string = 'CBC'
+  private modeMap: ModeMap = {
+    'CBC': CryptoJS.mode.CBC,
+    'CFB': CryptoJS.mode.CFB,
+    'CTR': CryptoJS.mode.CTR,
+    'OFB': CryptoJS.mode.OFB,
+    'ECB': CryptoJS.mode.ECB,
+  }
+
 
 
   @Builder tabBuilder(title: string,targetIndex: number) {
@@ -23,17 +75,132 @@ export default  struct EnDeCode {
     NavDestination() {
       Tabs() {
         TabContent() {
-          Text('MD5').fontSize(30)
+          Column({space: 12}) {
+            TextArea({placeholder: '请输入要加密的明文', text: this.MD5Txt})
+              .onChange((value: string) => {
+                if (value == '') {
+                  this.MD5Res = ''
+                } else {
+                  this.MD5Txt = value
+                }
+              })
+              .height(200)
+            Button('加密')
+              .width('100%')
+              .onClick(() => {
+                this.MD5Res = CryptoJS.MD5(this.MD5Txt) + ''
+              })
+
+            Column() {
+              Text('MD5结果：')
+              TextArea({text: this.MD5Res})
+                .margin({top: 12})
+
+            }
+            .alignItems(HorizontalAlign.Start)
+
+          }
+          .padding(12)
+          .height('100%')
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
         }
         .tabBar(this.tabBuilder('MD5', 0))
 
         TabContent() {
-          Text('Base 64').fontSize(30)
+          Column({space: 12}) {
+            TextArea({placeholder: '请输入要加密的明文', text: this.MD5Txt})
+              .onChange((value: string) => {
+                if (value == '') {
+                  this.B64Res = ''
+                } else {
+                  this.B64Txt = value
+                }
+              })
+              .height(200)
+            Button('加密')
+              .width('100%')
+              .onClick(() => {
+                this.B64Res = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(this.B64Txt))
+              })
+            Button('解密')
+              .width('100%')
+              .onClick(() => {
+                this.B64Res = CryptoJS.enc.Base64.parse(this.B64Txt).toString(CryptoJS.enc.Utf8)
+              })
+
+            Column() {
+              Text('Base 64 结果：')
+              TextArea({text: this.B64Res})
+                .margin({top: 12})
+
+            }
+            .alignItems(HorizontalAlign.Start)
+
+          }
+          .padding(12)
+          .height('100%')
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
         }
         .tabBar(this.tabBuilder('Base 64', 1))
 
         TabContent() {
-          Text('AES').fontSize(30)
+
+          Column({space: 12}) {
+            TextInput({placeholder: '加密Key', text: this.AES_key})
+              .onChange((value: string) => {
+                this.AES_key = value
+              })
+              .height(50)
+            Row({space: 12}) {
+              Text('模式')
+              Select([
+                {value: 'CBC'},
+                // {value: 'CFB'},
+                // {value: 'CTR'},
+                // {value: 'OFB'},
+                // {value: 'ECB'},
+              ])
+                .value(this.AES_mode)
+              }
+            TextArea({placeholder: '请输入要加密/解密的明文', text: this.AES_txt})
+              .onChange((value: string) => {
+                if (value == '') {
+                  this.AES_res = ''
+                } else {
+                  this.AES_txt = value
+                }
+              })
+              .height(200)
+            Button('加密')
+              .width('100%')
+              .onClick(() => {
+                this.AES_res = CryptoJS.AES.encrypt(this.AES_txt, this.AES_key, {
+                  mode: Reflect.get(this.modeMap, this.AES_mode)
+                }).toString()
+              })
+            Button('解密')
+              .width('100%')
+              .onClick(() => {
+                this.AES_res = CryptoJS.enc.Utf8.stringify(CryptoJS.AES.decrypt(this.AES_txt, this.AES_key, {
+                  mode: Reflect.get(this.modeMap, this.AES_mode)
+                }))
+              })
+
+            Column() {
+              Text('AES加密/解密结果：')
+              TextArea({text: this.AES_res})
+                .margin({top: 12})
+
+            }
+            .alignItems(HorizontalAlign.Start)
+
+          }
+          .padding(12)
+          .height('100%')
+          .width('100%')
+          .alignItems(HorizontalAlign.Start)
         }
         .tabBar(this.tabBuilder('AES', 2))
 
@@ -41,7 +208,6 @@ export default  struct EnDeCode {
       .onChange((index: number) => {
         this.currentIndex = index
       })
-      .barOverlap(true)
       .barMode(BarMode.Fixed)
       .width('100%')
       .height('100%')

@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\24045\\.ohos\\config\\default_hm_tool_dUXsv9KOszwK6kkE3izjDfmBNs-w-CwIwRbtf-VEgkI=.cer",
-          "storePassword": "0000001B1BACEACFD522C1A1555AC5E557649E103094CB1E44804B75EFCFE4D7A9AF5A7EEA99BFDBD414D4",
+          "certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_hm_tool_LgfFMhG_HG8cq2A5IAXkK_9g9kTZft4TDysFWkCX0gk=.cer",
+          "storePassword": "0000001B3D6F046D4DC78D37BEF89DBA6CC7E3059C823B323C001EF25D9FAB18B7426A653E0E7E54F27838",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BA27356B7ED6BC879E5171739B3F4542A62B3435D471A9055BA1EFA0304745FC1D4A4507DDC3435",
-          "profile": "C:\\Users\\24045\\.ohos\\config\\default_hm_tool_dUXsv9KOszwK6kkE3izjDfmBNs-w-CwIwRbtf-VEgkI=.p7b",
+          "keyPassword": "0000001BC9C330BCFA9885A7B3D1700F8199A8EF648B1296324C1002BC60EC8A5C68F07A6DBA49FE8B5BD4",
+          "profile": "C:\\Users\\Administrator\\.ohos\\config\\default_hm_tool_LgfFMhG_HG8cq2A5IAXkK_9g9kTZft4TDysFWkCX0gk=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\24045\\.ohos\\config\\default_hm_tool_dUXsv9KOszwK6kkE3izjDfmBNs-w-CwIwRbtf-VEgkI=.p12"
+          "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_hm_tool_LgfFMhG_HG8cq2A5IAXkK_9g9kTZft4TDysFWkCX0gk=.p12"
         }
       }
     ],
