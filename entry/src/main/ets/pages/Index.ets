@@ -1,17 +1,62 @@
 import pageOneTmp from './toolList/PageOne'
 
+import EnDeCode from './toolList/EnDeCode'
+import Eat from './toolList/eat'
+import BodyFatCalculators from './toolList/bodyFatCalculator'
+import Call from './toolList/call'
+import FamilyRelationCalculator from './toolList/familyRelationCalculator'
+
+
+interface ToolList {
+  title: string
+  info?: string
+  cpn?: string
+}
+
 @Entry
 @Component
 struct Index {
   @State TooTmp: ToolbarItem = {'value': "func", 'icon': "./image/ic_public_highlights.svg", 'action': ()=> {}}
 
-  private toolList = [
-    '加解密编码', // MD5 base65 ...
-    '今天吃什么',
-    '体脂计算器',
-    '电话模拟器',
-    '关系计算器',
-    '功德木鱼',
+  private toolList: Array<ToolList> = [
+    {
+      title: "加解密编码",
+      info: 'MD5, base 64, 对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密对称加密。。。',
+      cpn: 'EnDeCode'
+    },
+    {
+      title: "今天吃什么",
+      info: '今天吃什么是一个人生大问题',
+      cpn: 'Eat'
+    },
+    {
+      title: "体脂计算器",
+      info: '今天的你也要美美哒',
+      cpn: 'BodyFatCalculators'
+    },
+    {
+      title: "电话模拟器",
+      info: '打个电话吧',
+      cpn: "Call"
+    },
+    {
+      title: "关系计算器",
+      info: '爸爸的爸爸叫什么？',
+      cpn: "FamilyRelationCalculator"
+    },
+    {
+      title: "功德木鱼",
+      info: '我佛慈悲'
+    },
+
+
+
+
+
+    {
+      title: "更多功能",
+      info: "作者正在发现新点子，持续更新中..."
+    }
   ]
 
 
@@ -19,12 +64,16 @@ struct Index {
 
   @Builder
   PageMap(name: string) {
-    if (name === "NavDestinationTitle1") {
-      pageOneTmp()
-    } else if (name === "NavDestinationTitle2") {
-      pageTwoTmp()
-    } else if (name === "NavDestinationTitle3") {
-      pageThreeTmp()
+    if (name === "EnDeCode") {
+      EnDeCode()
+    } else if (name === "Eat") {
+      Eat()
+    } else if (name === "BodyFatCalculators") {
+      BodyFatCalculators()
+    } else if (name === "Call") {
+      Call()
+    } else if (name === "FamilyRelationCalculator") {
+      FamilyRelationCalculator()
     }
   }
 
@@ -32,21 +81,45 @@ struct Index {
     Column() {
       Navigation(this.pageInfos) {
         List({ space: 12 }) {
-          ForEach(this.toolList, (item:string) => {
+          ForEach(this.toolList, (item: ToolList) => {
             ListItem() {
-              Text(item)
-                .width("100%")
-                .height(72)
-                .backgroundColor('#F1F3F5')
-                .borderRadius(24)
-                .fontSize(16)
-                .fontWeight(500)
-                .textAlign(TextAlign.Center)
-                .onClick(()=>{
-                  this.pageInfos.pushPath({ name: "NavDestinationTitle" + 1})
-                })
+              Row(){
+                Column() {
+                  Text(item.title)
+                    .fontWeight(600)
+                    .fontSize(14)
+                  Text(item.info)
+                    .textOverflow({
+                      overflow: TextOverflow.Ellipsis
+                    })
+                    .maxLines(1)
+                    .fontSize(12)
+                    .width('80%')
+                    .fontColor("#ff929292")
+                }
+                .justifyContent(FlexAlign.SpaceBetween)
+                .alignItems(HorizontalAlign.Start)
+                .height('100%')
+                Blank()
+                if (item.cpn) {
+                  Image('/common/images/arrows-right.svg')
+                    .height('12')
+                }
+              }
+              .width("100%")
+              .padding('16 20')
+              .height(72)
+              .backgroundColor('#fff')
+              .borderRadius(16)
+              .onClick(()=>{
+                if (item.cpn) {
+                  this.pageInfos.pushPath({ name: item.cpn})
+                } else {
+
+                }
+              })
             }
-          }, (item:string) => item.toString())
+          })
         }
         .scrollBarWidth(0)
         .width("100%")
@@ -67,6 +140,7 @@ struct Index {
         {value: "设置", icon: '/common/images/edit.svg', action: ()=> {}},
       ])
     }
+    .backgroundColor('#F1F3F5')
     .height('100%')
     .width('100%')
   }
